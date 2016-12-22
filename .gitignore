@@ -28,8 +28,7 @@ node_modules
 *.swp
 
 # GitBook with babel
-/packages/gitbook-core/lib
-/packages/gitbook-plugin/lib
+/packages/*/lib
 
 # Output of documentation
 _book

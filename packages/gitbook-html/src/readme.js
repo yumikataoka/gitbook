@@ -1,6 +1,4 @@
-'use strict';
-
-var dom = require('./dom');
+const dom = require('./dom');
 
 /**
  * Parse an HTML content into metadata about a readme
@@ -9,7 +7,7 @@ var dom = require('./dom');
  * @return {Object}
  */
 function parseReadme(html) {
-    var $ = dom.parse(html);
+    const $ = dom.parse(html);
 
     return {
         title: $('h1:first-child').text().trim(),
@@ -18,4 +16,3 @@ function parseReadme(html) {
 }
 
 module.exports = parseReadme;
-//# sourceMappingURL=readme.js.map

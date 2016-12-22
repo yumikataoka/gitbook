@@ -1,6 +1,4 @@
-'use strict';
-
-var parseSummary = require('./summary');
+const parseSummary = require('./summary');
 
 /**
  * Parse an HTML content into a list of language.
@@ -8,7 +6,7 @@ var parseSummary = require('./summary');
  * @return {Array}
  */
 function parseLangs(content) {
-    var parts = parseSummary(content).parts;
+    const parts = parseSummary(content).parts;
     if (parts.length > 0) {
         return parts[0].articles;
     }
@@ -17,4 +15,3 @@ function parseLangs(content) {
 }
 
 module.exports = parseLangs;
-//# sourceMappingURL=langs.js.map

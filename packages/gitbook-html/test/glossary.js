@@ -1,29 +1,29 @@
-var fs = require('fs');
-var path = require('path');
-var assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const expect = require('expect');
 
-var glossary = require('../').glossary;
+const glossary = require('../src').glossary;
 
-describe('Glossary parsing', function () {
-    var LEXED;
+describe('Glossary', () => {
+    let LEXED;
 
-    before(function() {
-        var CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/GLOSSARY.html'), 'utf8');
+    before(() => {
+        const CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/GLOSSARY.html'), 'utf8');
         LEXED = glossary(CONTENT);
     });
 
-    it('should only get heading + paragraph pairs', function() {
-        assert.equal(LEXED.length, 5);
+    it('should only get heading + paragraph pairs', () => {
+        expect(LEXED.length).toBe(5);
     });
 
-    it('should output simple name/description objects', function() {
-        assert.equal(true, !(LEXED.some(function(e) {
-            return !Boolean(e.name && e.description);
-        })));
+    it('should output simple name/description objects', () => {
+        expect(!(LEXED.some(e => !Boolean(e.name && e.description)))).toBe(true);
     });
 
-    it('should correctly convert it to text', function() {
-        var text = glossary.toText(LEXED);
-        assertObjectsEqual(glossary(text), LEXED);
+    it('should correctly convert it to text', () => {
+        const text = glossary.toText(LEXED);
+        const parsed = glossary(text);
+
+        expect(parsed).toEqual(LEXED);
     });
 });

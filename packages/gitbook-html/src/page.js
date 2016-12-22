@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Parse content of a page.
  * @param {String} html
@@ -12,4 +10,3 @@ function parsePage(html) {
 }
 
 module.exports = parsePage;
-//# sourceMappingURL=page.js.map

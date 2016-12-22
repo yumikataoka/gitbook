@@ -1,6 +1,4 @@
-'use strict';
-
-var cheerio = require('cheerio');
+const cheerio = require('cheerio');
 
 /**
  * Parse an HTML string and return its content.
@@ -8,8 +6,8 @@ var cheerio = require('cheerio');
  * @return {cheerio.DOM}
  */
 function parse(html) {
-    var $ = cheerio.load(html);
-    var $el = $('html, body').first();
+    const $ = cheerio.load(html);
+    const $el = $('html, body').first();
 
     return $el.length > 0 ? $el : $;
 }
@@ -20,7 +18,7 @@ function parse(html) {
  * @return {cheerio.Node}
  */
 function root($) {
-    var $el = $('html, body, > div').first();
+    const $el = $('html, body, > div').first();
     return $el.length > 0 ? $el : $.root();
 }
 
@@ -30,10 +28,13 @@ function root($) {
  * @return {String}
  */
 function textNode($el) {
-    return $el.children.reduce(function (text, e) {
-        if (e.type == 'text') text += e.data;
-        return text;
-    }, '');
+    return $el.children.reduce(
+        (text, e) => {
+            if (e.type == 'text') text += e.data;
+            return text;
+        },
+        ''
+    );
 }
 
 /**
@@ -43,8 +44,8 @@ function textNode($el) {
  * @return {cheerio.Node}
  */
 function cleanup($el, $) {
-    $el.find('div').each(function () {
-        var $div = $(this);
+    $el.find('div').each(function() {
+        const $div = $(this);
         cleanup($div, $);
 
         $div.replaceWith($div.html());
@@ -54,9 +55,8 @@ function cleanup($el, $) {
 }
 
 module.exports = {
-    parse: parse,
-    textNode: textNode,
-    root: root,
-    cleanup: cleanup
+    parse,
+    textNode,
+    root,
+    cleanup
 };
-//# sourceMappingURL=dom.js.map

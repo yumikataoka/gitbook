@@ -1,21 +1,22 @@
-var _ = require('lodash');
+'use strict';
+
 var dom = require('./dom');
 
 /**
-    Parse an HTML content into a list of glossary entry
-
-    @param {String} html
-    @return {Array}
-*/
+ * Parse an HTML content into a list of glossary entry.
+ *
+ * @param {String} html
+ * @return {Array} entries
+ */
 function parseGlossary(html) {
     var $ = dom.parse(html);
 
     var entries = [];
 
-    $('h2').each(function() {
+    $('h2').each(function () {
         var $heading = $(this);
-        var $next = $heading.next()
-        var $p =  $next.is('p')? $next.first() : $next.find('p').first();
+        var $next = $heading.next();
+        var $p = $next.is('p') ? $next.first() : $next.find('p').first();
 
         var entry = {};
 
@@ -29,3 +30,4 @@ function parseGlossary(html) {
 }
 
 module.exports = parseGlossary;
+//# sourceMappingURL=glossary.js.map

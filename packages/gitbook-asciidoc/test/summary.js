@@ -33,7 +33,7 @@ describe('Summary parsing', () => {
         expect(PART.articles[1].ref).toExist();
         expect(PART.articles[2].ref).toExist();
         expect(PART.articles[3].ref).toExist();
-        expect(PART.articles[4].ref).toBe(null);
+        expect(PART.articles[4].ref).toNotExist();
 
         expect(PART.articles[0].title).toExist();
         expect(PART.articles[1].title).toExist();
