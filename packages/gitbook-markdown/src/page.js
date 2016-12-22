@@ -1,10 +1,8 @@
-var _ = require('lodash');
-var MarkupIt = require('markup-it');
-var gitbookSyntax = require('markup-it/syntaxes/markdown');
+const { State } = require('markup-it');
+const markdown = require('markup-it/lib/markdown');
 
-var RAW_START = '{% raw %}';
-var RAW_END   = '{% endraw %}';
-var markdown  = new MarkupIt(gitbookSyntax);
+const RAW_START = '{% raw %}';
+const RAW_END   = '{% endraw %}';
 
 /**
  * Escape a code block's content using raw blocks
@@ -25,19 +23,28 @@ function escape(str) {
  * @return {String}
  */
 function preparePage(src) {
-    var levelRaw = 0;
-    var content  = markdown.toContent(src, {
+    let levelRaw = 0;
+
+    const fromMD = State.create(markdown);
+    const document = fromMD.deserializeToDocument(src);
+
+    document = document.mapDescendants((node) => {
+
+    });
+
+
+    const content  = markdown.toContent(src, {
         math:     true,
         template: true
     });
 
-    var textMarkdown = markdown.toText(content, {
-        annotate: function(state, raw, token) {
-            var tokenType = token.getType();
+    const textMarkdown = markdown.toText(content, {
+        annotate(state, raw, token) {
+            const tokenType = token.getType();
 
             if (tokenType === MarkupIt.ENTITIES.TEMPLATE) {
-                var type = token.getData().get('type');
-                var expr = token.getAsPlainText();
+                const type = token.getData().get('type');
+                const expr = token.getAsPlainText();
 
                 if (type === 'expr') {
                     if (expr === 'raw') {

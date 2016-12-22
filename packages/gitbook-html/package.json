@@ -15,7 +15,7 @@
     "type": "git",
     "url": "https://github.com/GitbookIO/gitbook-html.git"
   },
-  "author": "FriendCode Inc. <contact@gitbook.com>",
+  "author": "GitBook Inc. <contact@gitbook.com>",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/GitbookIO/gitbook-html/issues"

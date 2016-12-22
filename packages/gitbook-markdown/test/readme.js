@@ -1,30 +1,30 @@
-var fs = require('fs');
-var path = require('path');
-var assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const expect = require('expect');
 
-var readme = require('../').readme;
+const readme = require('../src').readme;
 
-describe('Readme parsing', function () {
-    var LEXED;
+describe('Readme', () => {
+    let LEXED;
 
-    before(function() {
-        var CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/README.md'), 'utf8');
+    before(() => {
+        const CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/README.md'), 'utf8');
         LEXED = readme(CONTENT);
     });
 
-    it('should contain a title', function() {
-        assert(LEXED.title);
+    it('should contain a title', () => {
+        expect(LEXED.title).toExist();
     });
 
-    it('should contain a description', function() {
-        assert(LEXED.description);
+    it('should contain a description', () => {
+        expect(LEXED.description).toExist();
     });
 
-    it('should extract the right title', function() {
-        assert.equal(LEXED.title, "This is the title");
+    it('should extract the right title', () => {
+        expect(LEXED.title).toBe('This is the title');
     });
 
-    it('should extract the right description', function() {
-        assert.equal(LEXED.description, "This is the book description.");
+    it('should extract the right description', () => {
+        expect(LEXED.description).toBe('This is the book description.');
     });
 });

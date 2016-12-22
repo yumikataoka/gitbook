@@ -1,11 +1,9 @@
-var fs = require('fs');
-var path = require('path');
-var assert = require('assert');
+const expect = require('expect');
+const inline = require('../src').inline;
 
-var inline = require('../').inline;
-
-describe('Inline', function () {
-    it('should render inline markdown', function() {
-        assert.equal(inline('Hello **World**').content, 'Hello <strong>World</strong>');
+describe('Inline', () => {
+    it('should render inline markdown', () => {
+        const parsed = inline('Hello **World**');
+        expect(parsed.content).toBe('Hello <strong>World</strong>');
     });
 });

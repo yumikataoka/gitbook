@@ -1,74 +1,81 @@
-var fs = require('fs');
-var path = require('path');
-var assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const expect = require('expect');
 
-var page = require('../').page;
+const page = require('../src').page;
 
-describe('Page parsing', function() {
-    var LEXED;
+describe('Page', () => {
+    let LEXED;
 
-    before(function() {
-        var CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/PAGE.md'), 'utf8');
+    before(() => {
+        const CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/PAGE.md'), 'utf8');
         LEXED = page(CONTENT);
     });
 
-    it('should gen content', function() {
-        assert(LEXED.content);
+    it('should gen content', () => {
+        expect(LEXED.content).toExist();
     });
 
-    it('should not add id to headings', function() {
-        assert.equal(page('# Hello').content, '<h1>Hello</h1>');
-        assert.equal(page('# Hello {#test}').content, '<h1 id="test">Hello</h1>');
+    it('should not add id to headings', () => {
+        expect(page('# Hello').content).toBe('<h1>Hello</h1>');
+        expect(page('# Hello {#test}').content).toBe('<h1 id="test">Hello</h1>');
     });
 
-    it('should escape codeblocks in preparation (1)', function() {
-        assert.equal(page.prepare("Hello `world`"), 'Hello {% raw %}`world`{% endraw %}\n\n');
-        assert.equal(page.prepare("Hello `world test`"), 'Hello {% raw %}`world test`{% endraw %}\n\n');
-        assert.equal(page.prepare("Hello ```world test```"), 'Hello {% raw %}`world test`{% endraw %}\n\n');
-        assert.equal(page.prepare("Hello\n```js\nworld test\n```\n"), 'Hello\n\n{% raw %}```js\nworld test\n```\n\n{% endraw %}');
-        assert.equal(page.prepare("Hello\n```\ntest\n\tworld\n\ttest\n```"), 'Hello\n\n{% raw %}```\ntest\n    world\n    test\n```\n\n{% endraw %}');
+    it('should escape codeblocks in preparation (1)', () => {
+        expect(page.prepare('Hello `world`')).toBe('Hello {% raw %}`world`{% endraw %}\n\n');
+        expect(page.prepare('Hello `world test`')).toBe('Hello {% raw %}`world test`{% endraw %}\n\n');
+        expect(page.prepare('Hello ```world test```')).toBe('Hello {% raw %}`world test`{% endraw %}\n\n');
+        expect(page.prepare('Hello\n```js\nworld test\n```\n')).toBe('Hello\n\n{% raw %}```js\nworld test\n```\n\n{% endraw %}');
+        expect(page.prepare('Hello\n```\ntest\n\tworld\n\ttest\n```')).toBe('Hello\n\n{% raw %}```\ntest\n    world\n    test\n```\n\n{% endraw %}');
     });
 
-    it('should escape codeblocks in preparation (2)', function() {
-        assert.equal(
-            page.prepare("Hello\n\n\n\tworld\n\thello\n\n\ntest"),
+    it('should escape codeblocks in preparation (2)', () => {
+        expect(
+            page.prepare('Hello\n\n\n\tworld\n\thello\n\n\ntest')
+        ).toBe(
             'Hello\n\n{% raw %}```\nworld\nhello```\n\n{% endraw %}test\n\n'
         );
-        assert.equal(
-            page.prepare("Hello\n\n\n\tworld\n\thello\n\n\n"),
+        expect(
+            page.prepare('Hello\n\n\n\tworld\n\thello\n\n\n')
+        ).toBe(
             'Hello\n\n{% raw %}```\nworld\nhello```\n\n{% endraw %}'
         );
     });
 
-    it('should escape codeblocks with nunjucks tags', function() {
-        assert.equal(
-            page.prepare('Hello {{ "Bonjour" }} ```test```'),
+    it('should escape codeblocks with nunjucks tags', () => {
+        expect(
+            page.prepare('Hello {{ "Bonjour" }} ```test```')
+        ).toBe(
             'Hello {{ "Bonjour" }} {% raw %}`test`{% endraw %}\n\n'
         );
     });
 
-    it('should escape codeblocks with nunjucks tags in {% raw %} tags', function() {
-        assert.equal(
-            page.prepare('{% raw %}Hello {{ "Bonjour" }} ```test```{% endraw %}'),
+    it('should escape codeblocks with nunjucks tags in {% raw %} tags', () => {
+        expect(
+            page.prepare('{% raw %}Hello {{ "Bonjour" }} ```test```{% endraw %}')
+        ).toBe(
             '{% raw %}Hello {{ "Bonjour" }} `test`{% endraw %}\n\n'
         );
-        assert.equal(
-            page.prepare('{% raw %}Hello {{ "Bonjour" }} {% raw %}{% endraw %}```test```'),
+        expect(
+            page.prepare('{% raw %}Hello {{ "Bonjour" }} {% raw %}{% endraw %}```test```')
+        ).toBe(
             '{% raw %}Hello {{ "Bonjour" }} {% raw %}{% endraw %}{% raw %}`test`{% endraw %}\n\n'
         );
-        assert.equal(
-            page.prepare('```{% raw %}Hello {{ "Bonjour" }} {% raw %}```'),
+        expect(
+            page.prepare('```{% raw %}Hello {{ "Bonjour" }} {% raw %}```')
+        ).toBe(
             '{% raw %}`{% raw %}Hello {{ "Bonjour" }} {% raw %}`{% endraw %}\n\n'
         );
 
-        assert.equal(
-            page.prepare('```\ntest\n```\n\n\n### Test'),
+        expect(
+            page.prepare('```\ntest\n```\n\n\n### Test')
+        ).toBe(
             '{% raw %}```\ntest\n```\n\n{% endraw %}### Test\n\n'
         );
     });
 
-    it('should not process math', function() {
-        assert.equal(page.prepare("Hello $world$"), 'Hello $world$\n\n');
-        assert.equal(page.prepare("Hello $$world$$"), 'Hello $$world$$\n\n');
+    it('should not process math', () => {
+        expect(page.prepare('Hello $world$')).toBe('Hello $world$\n\n');
+        expect(page.prepare('Hello $$world$$')).toBe('Hello $$world$$\n\n');
     });
 });

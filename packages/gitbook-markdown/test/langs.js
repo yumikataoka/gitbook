@@ -1,28 +1,28 @@
-var fs = require('fs');
-var path = require('path');
-var assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const expect = require('expect');
+const langs = require('../src').langs;
 
-var langs = require('../').langs;
+describe('Languages', () => {
+    let LEXED;
 
-describe('Languages parsing', function () {
-    var LEXED;
-
-    before(function() {
-        var CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/LANGS.md'), 'utf8');
+    before(() => {
+        const CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/LANGS.md'), 'utf8');
         LEXED = langs(CONTENT);
     });
 
-    it('should detect paths and titles', function() {
-        assert.equal(LEXED.length, 2);
-        assert.equal(LEXED[0].ref,'en/');
-        assert.equal(LEXED[0].title,'English');
+    it('should detect paths and titles', () => {
+        expect(LEXED.length).toEqual(2);
+        expect(LEXED[0].ref).toEqual('en/');
+        expect(LEXED[0].title).toEqual('English');
 
-        assert.equal(LEXED[1].ref,'fr/');
-        assert.equal(LEXED[1].title,'French');
+        expect(LEXED[1].ref).toEqual('fr/');
+        expect(LEXED[1].title).toEqual('French');
     });
 
-    it('should correctly convert it to text', function() {
-        var text = langs.toText(LEXED);
-        assertObjectsEqual(langs(text), LEXED);
+    it('should correctly convert it to text', () => {
+        const text = langs.toText(LEXED);
+        const parsed = langs(text);
+        expect(parsed).toEqual(LEXED);
     });
 });

@@ -1,38 +1,24 @@
 {
   "name": "gitbook-markdown",
-  "version": "2.0.1",
+  "version": "4.0.0",
   "homepage": "https://www.gitbook.com",
-  "description": "Parse markdown content for gitbook",
+  "description": "Markdown parser interface for GitBook",
   "main": "lib/index.js",
   "dependencies": {
-    "gitbook-html": "1.3.3",
-    "lodash": "^4.13.1",
+    "gitbook-html": "4.0.0",
     "markdown-escape": "^1.0.1",
-    "markup-it": "^2.2.0 >=2.2.0"
-  },
-  "devDependencies": {
-    "mocha": "^2.5.3"
+    "markup-it": "3.2.0"
   },
   "scripts": {
-    "test": "export TESTING=true; mocha --reporter list --bail"
+    "test": "mocha --reporter list --bail"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GitbookIO/gitbook-markdown.git"
+    "url": "https://github.com/GitbookIO/gitbook.git"
   },
-  "author": "FriendCode Inc. <contact@gitbook.com>",
+  "author": "GitBook Inc. <contact@gitbook.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/GitbookIO/gitbook-markdown/issues"
-  },
-  "contributors": [
-    {
-      "name": "Aaron O'Mullan",
-      "email": "aaron@gitbook.com"
-    },
-    {
-      "name": "Samy Pessé",
-      "email": "samy@gitbook.com"
-    }
-  ]
+    "url": "https://github.com/GitbookIO/gitbook/issues"
+  }
 }
