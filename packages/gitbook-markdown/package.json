@@ -11,7 +11,7 @@
     "slate": "^0.16.8"
   },
   "scripts": {
-    "test": "mocha --reporter list --bail"
+    "test": "mocha --reporter list --bail --compilers js:babel-register"
   },
   "repository": {
     "type": "git",

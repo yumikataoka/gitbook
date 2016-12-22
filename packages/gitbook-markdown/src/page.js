@@ -69,28 +69,52 @@ function escapeTextNode(node) {
     return nodes;
 }
 
-
 /**
  * Annotate a block container.
  * @param  {Node} parent
- * @return {Node}
+ * @param  {Number} levelRaw
+ * @return {Node} node
+ * @return {Number} levelRaw
  */
 function annotateNode(parent, levelRaw) {
     let { nodes } = parent;
 
     nodes = nodes.reduce((out, node) => {
-        if (node.type === BLOCKS.CODE) {
-            return out.concat(escapeCodeBlock(node));
+        if (node.type === INLINES.TEMPLATE) {
+            const { type, text } = node.data.toJS();
+
+            if (type === 'expr') {
+                if (text === 'raw') {
+                    levelRaw = levelRaw + 1;
+                } else if (text == 'endraw') {
+                    levelRaw = 0;
+                }
+            }
+
+            return out.concat([ node ]);
+        }
+
+        else if (node.type === BLOCKS.CODE) {
+            return out.concat(
+                levelRaw == 0 ? escapeCodeBlock(node) : [ node ]
+            );
         }
 
         else if (node.kind == 'text') {
-            return out.concat(escapeTextNode(node));
+            return out.concat(
+                levelRaw == 0 ? escapeTextNode(node) : [ node ]
+            );
         }
 
-        return out.concat([node]);
+        const result = annotateNode(node, levelRaw);
+        levelRaw = result.levelRaw;
+        return out.concat([result.node]);
     }, []);
 
-    return parent.merge({ nodes });
+    return {
+        levelRaw,
+        node: parent.merge({ nodes })
+    };
 }
 
 /**
@@ -101,30 +125,9 @@ function annotateNode(parent, levelRaw) {
  * @return {String}
  */
 function preparePage(src) {
-    let levelRaw = 0;
-
     const state = State.create(markdown);
     let document = state.deserializeToDocument(src);
-
-    document = document.mapDescendants((node) => {
-        if (node.type === INLINES.TEMPLATE) {
-            const { type, text } = node.data;
-
-            if (type === 'expr') {
-                if (text === 'raw') {
-                    levelRaw = levelRaw + 1;
-                } else if (text == 'endraw') {
-                    levelRaw = 0;
-                }
-            }
-
-            return node;
-        } else if (node.kind !== 'text') {
-            return annotateNode(node, levelRaw);
-        } else {
-            return node;
-        }
-    });
+    document = annotateNode(document, 0).node;
 
     return state.serializeDocument(document);
 }

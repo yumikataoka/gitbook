@@ -25,26 +25,26 @@ describe('Page', () => {
         expect(page.prepare('Hello `world`')).toBe('Hello {% raw %}`world`{% endraw %}\n\n');
         expect(page.prepare('Hello `world test`')).toBe('Hello {% raw %}`world test`{% endraw %}\n\n');
         expect(page.prepare('Hello ```world test```')).toBe('Hello {% raw %}`world test`{% endraw %}\n\n');
-        expect(page.prepare('Hello\n```js\nworld test\n```\n')).toBe('Hello\n\n{% raw %}```js\nworld test\n```\n\n{% endraw %}');
-        expect(page.prepare('Hello\n```\ntest\n\tworld\n\ttest\n```')).toBe('Hello\n\n{% raw %}```\ntest\n    world\n    test\n```\n\n{% endraw %}');
+        expect(page.prepare('Hello\n```js\nworld test\n```\n')).toBe('Hello\n\n{% raw %}\n```js\nworld test\n```\n\n{% endraw %}\n');
+        expect(page.prepare('Hello\n```\ntest\n\tworld\n\ttest\n```')).toBe('Hello\n\n{% raw %}\n```\ntest\n    world\n    test\n```\n\n{% endraw %}\n');
     });
 
     it('should escape codeblocks in preparation (2)', () => {
         expect(
             page.prepare('Hello\n\n\n\tworld\n\thello\n\n\ntest')
         ).toBe(
-            'Hello\n\n{% raw %}```\nworld\nhello```\n\n{% endraw %}test\n\n'
+            'Hello\n\n{% raw %}\n```\nworld\nhello\n```\n\n{% endraw %}\ntest\n\n'
         );
         expect(
             page.prepare('Hello\n\n\n\tworld\n\thello\n\n\n')
         ).toBe(
-            'Hello\n\n{% raw %}```\nworld\nhello```\n\n{% endraw %}'
+            'Hello\n\n{% raw %}\n```\nworld\nhello\n```\n\n{% endraw %}\n'
         );
     });
 
     it('should escape codeblocks with nunjucks tags', () => {
         expect(
-            page.prepare('Hello {{ "Bonjour" }} ```test```')
+            page.prepare('Hello {{ "Bonjour" }} {% raw %}```test```{% endraw %}')
         ).toBe(
             'Hello {{ "Bonjour" }} {% raw %}`test`{% endraw %}\n\n'
         );
@@ -70,7 +70,7 @@ describe('Page', () => {
         expect(
             page.prepare('```\ntest\n```\n\n\n### Test')
         ).toBe(
-            '{% raw %}```\ntest\n```\n\n{% endraw %}### Test\n\n'
+            '{% raw %}\n```\ntest\n```\n\n{% endraw %}\n### Test\n\n'
         );
     });
 

@@ -8,7 +8,7 @@
     "cheerio": "^0.20.0 && >=0.20.0"
   },
   "scripts": {
-    "test": "mocha --reporter spec --bail",
+    "test": "mocha --reporter spec --bail --compilers js:babel-register",
     "prepublish": "rm -rf lib/ && babel -d lib/ src/ --source-maps"
   },
   "repository": {
