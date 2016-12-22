@@ -1,18 +1,18 @@
-var fs = require('fs');
-var path = require('path');
-var assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const expect = require('expect');
 
-var page = require('../').page;
+const page = require('../src').page;
 
-describe('Page parsing', function() {
-    var LEXED;
+describe('Page parsing', () => {
+    let LEXED;
 
-    before(function() {
-        var CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/PAGE.adoc'), 'utf8');
+    before(() => {
+        const CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/PAGE.adoc'), 'utf8');
         LEXED = page(CONTENT);
     });
 
-    it('should gen content', function() {
-        assert(LEXED.content);
+    it('should gen content', () => {
+        expect(LEXED.content).toExist();
     });
 });

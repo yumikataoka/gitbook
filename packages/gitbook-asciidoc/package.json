@@ -9,29 +9,17 @@
         "asciidoctor.js": "1.5.5-4",
         "gitbook-html": "1.3.3"
     },
-    "devDependencies": {
-        "mocha": "2.3.2"
-    },
     "scripts": {
-        "test": "export TESTING=true; mocha --reporter list --bail"
+        "test": "mocha --reporter list --bail --compilers js:babel-register",
+        "prepublish": "rm -rf lib/ && babel -d lib/ src/ --source-maps"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/GitbookIO/gitbook-asciidoc.git"
+        "url": "https://github.com/GitbookIO/gitbook.git"
     },
-    "author": "FriendCode Inc. <contact@gitbook.com>",
+    "author": "GitBook Inc. <contact@gitbook.com>",
     "license": "Apache-2.0",
     "bugs": {
-        "url": "https://github.com/GitbookIO/gitbook-asciidoc/issues"
-    },
-    "contributors": [
-        {
-            "name": "Aaron O'Mullan",
-            "email": "aaron@gitbook.com"
-        },
-        {
-            "name": "Samy Pessé",
-            "email": "samy@gitbook.com"
-        }
-    ]
+        "url": "https://github.com/GitbookIO/gitbook/issues"
+    }
 }

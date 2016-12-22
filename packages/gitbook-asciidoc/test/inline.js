@@ -1,11 +1,10 @@
-var fs = require('fs');
-var path = require('path');
-var assert = require('assert');
+const expect = require('expect');
 
-var inline = require('../').inline;
+const inline = require('../src').inline;
 
-describe('Inline', function () {
-    it('should render inline AsciiDoc', function() {
-        assert.equal(inline('Hello **World**').content, 'Hello <strong>World</strong>');
+describe('Inline', () => {
+    it('should render inline AsciiDoc', () => {
+        const parsed = inline('Hello **World**');
+        expect(parsed.content).toEqual('Hello <strong>World</strong>');
     });
 });

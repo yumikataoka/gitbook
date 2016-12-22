@@ -5,43 +5,42 @@ function ns(s, n) {
 }
 
 module.exports = {
-    onTitleStart: function(level) {
+    onTitleStart(level) {
         return ns('=', level) + ' ';
     },
-    onTitleEnd: function(level) {
+    onTitleEnd(level) {
         return this.onBL();
     },
 
-    onParagraphStart: function() {
+    onParagraphStart() {
         return this.onSection();
     },
-    onParagraphEnd: function() {
+    onParagraphEnd() {
         return this.onSection();
     },
 
-    onLinkStart: function(href) {
+    onLinkStart(href) {
         return 'link:' + href + '[';
     },
-    onLinkEnd: function() {
+    onLinkEnd() {
         return ']';
     },
 
-    onListStart: function(level) {
+    onListStart(level) {
         return '';
     },
-    onListEnd: function() {
+    onListEnd() {
         return '';
     },
 
-    onListItemStart: function(level) {
+    onListItemStart(level) {
         return ns('.', level + 1) + ' ';
     },
-    onListItemEnd: function() {
+    onListItemEnd() {
         return '';
     },
 
-    onHR: function() {
-        return "'''";
+    onHR() {
+        return '\'\'\'';
     }
 };
-

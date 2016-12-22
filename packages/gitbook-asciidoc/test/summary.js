@@ -1,55 +1,56 @@
-var fs = require('fs');
-var path = require('path');
-var assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const expect = require('expect');
 
-var summary = require('../').summary;
+const summary = require('../src').summary;
 
-describe('Summary parsing', function () {
-    var LEXED, PART;
+describe('Summary parsing', () => {
+    let LEXED, PART;
 
-    before(function() {
-        var CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/SUMMARY.adoc'), 'utf8');
+    before(() => {
+        const CONTENT = fs.readFileSync(path.join(__dirname, './fixtures/SUMMARY.adoc'), 'utf8');
         LEXED = summary(CONTENT);
         PART = LEXED.parts[0];
         // todo: add support for parts in asciidoc
     });
 
-    it('should detect parts', function() {
-        assert.equal(LEXED.parts.length, 1);
+    it('should detect parts', () => {
+        expect(LEXED.parts.length).toBe(1);
     });
 
-    it('should detect articles', function() {
-        assert.equal(PART.articles.length, 5);
+    it('should detect articles', () => {
+        expect(PART.articles.length).toBe(5);
     });
 
-    it('should support articles', function() {
-        assert.equal(PART.articles[0].articles.length, 2);
-        assert.equal(PART.articles[1].articles.length, 0);
-        assert.equal(PART.articles[2].articles.length, 0);
+    it('should support articles', () => {
+        expect(PART.articles[0].articles.length).toBe(2);
+        expect(PART.articles[1].articles.length).toBe(0);
+        expect(PART.articles[2].articles.length).toBe(0);
     });
 
-    it('should detect paths and titles', function() {
-        assert(PART.articles[0].ref);
-        assert(PART.articles[1].ref);
-        assert(PART.articles[2].ref);
-        assert(PART.articles[3].ref);
-        assert.equal(PART.articles[4].ref, null);
+    it('should detect paths and titles', () => {
+        expect(PART.articles[0].ref).toExist();
+        expect(PART.articles[1].ref).toExist();
+        expect(PART.articles[2].ref).toExist();
+        expect(PART.articles[3].ref).toExist();
+        expect(PART.articles[4].ref).toBe(null);
 
-        assert(PART.articles[0].title);
-        assert(PART.articles[1].title);
-        assert(PART.articles[2].title);
-        assert(PART.articles[3].title);
-        assert(PART.articles[4].title);
+        expect(PART.articles[0].title).toExist();
+        expect(PART.articles[1].title).toExist();
+        expect(PART.articles[2].title).toExist();
+        expect(PART.articles[3].title).toExist();
+        expect(PART.articles[4].title).toExist();
     });
 
-    it('should normalize paths from .md', function() {
-        assert.equal(PART.articles[0].ref, 'chapter-1/README.adoc');
-        assert.equal(PART.articles[1].ref, 'chapter-2/README.adoc');
-        assert.equal(PART.articles[2].ref, 'chapter-3/README.adoc');
+    it('should normalize paths from .md', () => {
+        expect(PART.articles[0].ref).toBe('chapter-1/README.adoc');
+        expect(PART.articles[1].ref).toBe('chapter-2/README.adoc');
+        expect(PART.articles[2].ref).toBe('chapter-3/README.adoc');
     });
 
-    it('should correctly convert it to text', function() {
-        var text = summary.toText(LEXED);
-        assertObjectsEqual(summary(text), LEXED);
+    it('should correctly convert it to text', () => {
+        const text = summary.toText(LEXED);
+        const parsed = summary(text);
+        expect(parsed).toEqual(LEXED);
     });
 });
