@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const expect = require('assert');
+const expect = require('expect');
 
 const glossary = require('../src').glossary;
 

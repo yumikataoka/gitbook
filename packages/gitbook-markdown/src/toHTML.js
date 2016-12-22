@@ -1,4 +1,5 @@
-const { State } = require('markup-it');
+const { State, Block, BLOCKS } = require('markup-it');
+const { Document } = require('slate');
 const markdown = require('markup-it/lib/markdown');
 const html = require('markup-it/lib/html');
 
@@ -23,10 +24,21 @@ function convertMdToHTMLBlock(src) {
  * @return {String} (html)
  */
 function convertMdToHTMLInline(src) {
-    const content  = markdown.toInlineContent(src);
-    const textHtml = html.toInlineText(content);
+    const fromMD = State.create(markdown);
+    const document = fromMD.deserializeToDocument(src);
 
-    return textHtml;
+    // Create a document with a single unstyled node
+    const newDocument = Document.create({
+        nodes: [
+            Block.create({
+                type: BLOCKS.TEXT,
+                nodes: document.nodes.get(0).nodes
+            })
+        ]
+    });
+
+    const toHTML = State.create(html);
+    return toHTML.serializeDocument(newDocument);
 }
 
 module.exports = {
