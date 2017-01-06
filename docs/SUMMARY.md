@@ -44,10 +44,16 @@
 
 ### Plugin Development
 
-* [Introduction](./api/README.md)
-* [Node](./api/node.md)
+* [Creating a plugin](./api/README.md)
 * [Connect to the context](./api/connect.md)
 * [Components](./api/components.md)
+* [Node APIs](./api/node.md)
+
+### Internals
+
+* [Using programmatically](./internals/README.md)
+* [Browser environment](./internals/browser.md)
+* [APIs](./internals/api.md)
 
 --
 
