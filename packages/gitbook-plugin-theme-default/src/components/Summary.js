@@ -51,14 +51,17 @@ const SummaryArticles = React.createClass({
 
 const SummaryPart = React.createClass({
     propTypes: {
-        part: GitBook.PropTypes.SummaryPart
+        part:  GitBook.PropTypes.SummaryPart,
+        first: React.PropTypes.bool
     },
 
     render() {
-        const { part } = this.props;
+        const { part, first } = this.props;
         const { title, articles } = part;
 
-        const titleEL = title ? <h2 className="SummaryPart-Title">{title}</h2> : null;
+        const titleEL = title ? (
+            <h2 className="SummaryPart-Title">{title}</h2>
+        ) : (first ? null : <hr className="SummaryPart-Divider" />);
 
         return (
             <GitBook.InjectedComponent matching={{ role: 'summary:part' }} props={this.props}>
@@ -82,7 +85,7 @@ const SummaryParts = React.createClass({
         return (
             <GitBook.InjectedComponent matching={{ role: 'summary:parts' }} props={this.props}>
                 <div className="SummaryParts">
-                    {parts.map((part, i) => <SummaryPart key={i} part={part} />)}
+                    {parts.map((part, i) => <SummaryPart key={i} part={part} first={i == 0} />)}
                 </div>
             </GitBook.InjectedComponent>
         );
